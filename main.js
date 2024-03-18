@@ -1,6 +1,6 @@
 import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
+// import javascriptLogo from './javascript.svg'
+// import viteLogo from '/vite.svg'
 import { setupCounter } from './counter.js'
 
 const board = document.querySelector("[data-board]")
@@ -19,8 +19,6 @@ const drawBoard = (width) => {
   board.style.gridTemplateColumns = `repeat(${width}, ${length})`
 
   let i = 0
-  // for (let file = 0; file < width; file++) {
-  //   for (let rank = widthMinusOne; rank >= 0; rank--) {
   for (let rank = widthMinusOne; rank >= 0; rank--) {
     for (let file = 0; file < width; file++) {
       i += 1
@@ -36,9 +34,6 @@ const drawBoard = (width) => {
     }
   }
   board.innerHTML = squares
-
-  // const el = document.querySelector(`[data-file="2"] + [data-rank="2"]`)
-  // console.log(el)
 }
 
 drawBoard(8)
