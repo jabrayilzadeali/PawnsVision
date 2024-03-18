@@ -39,7 +39,7 @@ function countdown(seconds = 30, diff = 1000) {
   return start
 }
 
-countdown(3, 1000)()
+countdown(15, 1000)()
 
 const drawBoard = (width) => {
   const widthMinusOne = width - 1
@@ -67,22 +67,24 @@ const drawBoard = (width) => {
 }
 
 drawBoard(8)
-
-const checkSquareColor = ({ file, rank }, color) => {
-  let c;
+const getSquareColor = ({ file, rank }) => {
   if (file % 2 === 0) {
     if (rank % 2 === 0) {
-      c = "dark"
+      return "dark"
     } else {
-      c = "light"
+      return "light"
     }
   } else {
     if (rank % 2 === 0) {
-      c = "light"
+      return "light"
     } else {
-      c = "dark"
+      return "dark"
     }
   }
+}
+
+const checkSquareColor = ({ file, rank }, color) => {
+  let c = getSquareColor({ file, rank });
 
   if (color === c) return true
   return false
@@ -101,19 +103,26 @@ const notation = ({ file, rank }) => `${letters[file]}${++rank}`
 
 randomSquareObj = randomSquare()
 randomSquareValue = notation(randomSquareObj)
-console.log(randomSquareObj, randomSquareValue)
 pos.innerText = randomSquareValue
-console.log(randomSquareObj, randomSquareValue)
 
+// !NOTE  you can create css classes thathave !important in them this way the code will be more clean and you will add or remove class
 const highlightSquare = ({ file, rank }, color = "red" ) => {
   const el = document.querySelector(`[data-file="${file}"][data-rank="${rank}"]`)
-  el.classList.add("flex", "justify-center", "align-center", "h-full")
+  // el.classList.add("flex", "justify-center", "align-center", "h-full")
   // el.innerHTML = "<div></div>"
   el.style.backgroundColor = color
 }
 
+const resetSquareColor = ({ file, rank }) => {
+  const el = document.querySelector(`[data-file="${file}"][data-rank="${rank}"]`)
+  console.log(el.dataset.file, file, el.dataset.rank, rank, notation({ file, rank }))
+  const color = getSquareColor({ file, rank })
+  el.style.backgroundColor = (color === "dark") ? "black" : "white"
+  // el.style.backgroundColor = "blue"
+  console.log(getSquareColor({ file, rank }))
+}
+
 const vizibilityToggle = () => {
-  console.log('toggled')
   answer.classList.toggle('hidden')
 
   quiz.classList.toggle('hidden')
@@ -124,24 +133,20 @@ const vizibilityToggle = () => {
 let userSelectedColor;
 
 btnDark.addEventListener("click", () => {
-  console.log('Dark button clicked')
   userSelectedColor = "dark"
   clearInterval(timerId)
   const result = checkSquareColor(randomSquareObj, userSelectedColor)
   const color = (result) ? "green" : "red"
-  console.log(randomSquareObj, randomSquareValue)
   highlightSquare(randomSquareObj, color)
   vizibilityToggle()
 })
 
 
 btnLight.addEventListener("click", () => {
-  console.log('light button clicked')
   userSelectedColor = "light"
   clearInterval(timerId)
   const result = checkSquareColor(randomSquareObj, userSelectedColor)
   const color = (result) ? "green" : "red"
-  console.log(randomSquareObj, randomSquareValue)
   highlightSquare(randomSquareObj, color)
   vizibilityToggle()
 })
@@ -157,7 +162,9 @@ const checkSquareColorAndLog = () => {
 
 
 btnContinue.addEventListener("click", () => {
-  countdown(3, 1000)()
+  resetSquareColor(randomSquareObj)
+  console.log(randomSquareObj)
+  countdown(15, 1000)()
   vizibilityToggle()
   randomSquareObj = randomSquare()
   randomSquareValue = notation(randomSquareObj)
