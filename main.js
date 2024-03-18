@@ -3,13 +3,43 @@ import './style.css'
 // import viteLogo from '/vite.svg'
 import { setupCounter } from './counter.js'
 
+const answer = document.querySelector("[data-answer]")
+const quiz = document.querySelector("[data-quiz]")
 const board = document.querySelector("[data-board]")
+const btnContinue = document.querySelector("[data-continue]")
 const pos = document.querySelector("[data-pos]")
 const btnLight = document.querySelector("[data-btn-light]")
 const btnDark = document.querySelector("[data-btn-dark]")
+const timerEl = document.querySelector("[data-timer]")
 
 const letters = ["a", "b", "c", "d", "e", "f", "g", "h"]
 const length = getComputedStyle(board).getPropertyValue('--length');
+let randomSquareObj = {}
+let randomSquareValue = ""
+let timerId = ""
+
+function countdown(seconds = 30, diff = 1000) {
+  let id
+  timerEl.innerText = `time left: ${seconds}`
+  function start() {
+    const id = setInterval(() => {
+      console.log()
+      seconds -= 1
+      timerEl.innerText = `time left: ${seconds}`
+      if (seconds <= 0) {
+        clearInterval(timerId)
+        vizibilityToggle()
+
+        highlightSquare(randomSquareObj)
+      }
+    }, diff)
+    timerId = id
+
+  }
+  return start
+}
+
+countdown(3, 1000)()
 
 const drawBoard = (width) => {
   const widthMinusOne = width - 1
@@ -66,11 +96,14 @@ const randomSquare = () => {
     rank: random(8)
   }
 }
+
 const notation = ({ file, rank }) => `${letters[file]}${++rank}`
 
-const s = randomSquare()
-console.log(s, notation(s))
-pos.innerText = notation(s)
+randomSquareObj = randomSquare()
+randomSquareValue = notation(randomSquareObj)
+console.log(randomSquareObj, randomSquareValue)
+pos.innerText = randomSquareValue
+console.log(randomSquareObj, randomSquareValue)
 
 const highlightSquare = ({ file, rank }, color = "red" ) => {
   const el = document.querySelector(`[data-file="${file}"][data-rank="${rank}"]`)
@@ -79,21 +112,38 @@ const highlightSquare = ({ file, rank }, color = "red" ) => {
   el.style.backgroundColor = color
 }
 
+const vizibilityToggle = () => {
+  console.log('toggled')
+  answer.classList.toggle('hidden')
+
+  quiz.classList.toggle('hidden')
+  // const s = randomSquare()
+  // pos.innerText = notation(s)
+}
+
 let userSelectedColor;
 
 btnDark.addEventListener("click", () => {
+  console.log('Dark button clicked')
   userSelectedColor = "dark"
-  const result = checkSquareColor(s, userSelectedColor)
+  clearInterval(timerId)
+  const result = checkSquareColor(randomSquareObj, userSelectedColor)
   const color = (result) ? "green" : "red"
-  highlightSquare(s, color)
+  console.log(randomSquareObj, randomSquareValue)
+  highlightSquare(randomSquareObj, color)
+  vizibilityToggle()
 })
 
 
 btnLight.addEventListener("click", () => {
+  console.log('light button clicked')
   userSelectedColor = "light"
-  const result = checkSquareColor(s, userSelectedColor)
+  clearInterval(timerId)
+  const result = checkSquareColor(randomSquareObj, userSelectedColor)
   const color = (result) ? "green" : "red"
-  highlightSquare(s, color)
+  console.log(randomSquareObj, randomSquareValue)
+  highlightSquare(randomSquareObj, color)
+  vizibilityToggle()
 })
 
 
@@ -104,6 +154,40 @@ const checkSquareColorAndLog = () => {
         console.log("false");
     }
 }
+
+
+btnContinue.addEventListener("click", () => {
+  countdown(3, 1000)()
+  vizibilityToggle()
+  randomSquareObj = randomSquare()
+  randomSquareValue = notation(randomSquareObj)
+  pos.innerText = randomSquareValue
+})
+
+
+
+// const intervalManager = (flag, callback, time, intervalId = null) => {
+//   if (flag) {
+//     intervalId = setInterval(callback, time);
+//   } else {
+//     clearInterval(intervalId)
+//   }
+// }
+
+
+// const timerCallback = () => {
+//   timerEl.innerText = `time left: ${seconds}`
+//
+//   seconds -= 1
+//   if (seconds < 0) {
+//     intervalManager(timerId)
+//     vizibilityToggle()
+//   }
+// }
+
+// const timerId = intervalManager(true, timerCallback, 1000)
+
+
 
 
 

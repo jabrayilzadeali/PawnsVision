@@ -8,16 +8,17 @@
   </head>
   <body>
     <div id="app"></div>
-    <div class="">
+    <div data-answer class="text-center hidden">
       <div data-board class="board"></div>
-      <button class="btn hidden">Continue</button>
+      <button data-continue class="btn my-2">Continue</button>
     </div>
     <div data-quiz class="quiz">
-      <h3 class="text-center">Get correct square color</h3>
-      <h2 data-pos class="text-center font-xl"></h2>
-      <div class="w-full flex justify-around">
-        <button data-btn-light class="btn light text-dark">Light</button>
-        <button data-btn-dark class="btn dark text-light">Dark</button>
+      <h3 class="text-center text-light">Get correct square color</h3>
+      <div data-timer class="text-lg text-light text-center my-2"></div>
+      <h2 data-pos class="text-center pb-3 text-8xl text-light"></h2>
+      <div class="w-full flex justify-around gap-3">
+        <button data-btn-light class="btn light border-none w-7 cursor-pointer text-dark">Light</button>
+        <button data-btn-dark class="btn dark w-7 text-light cursor-pointer border-1">Dark</button>
       </div>
     </div>
     <script type="module" src="/main.js"></script>
