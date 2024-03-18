@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div class="">
+      <div data-board class="board"></div>
+      <button class="btn hidden">Continue</button>
+    </div>
+    <div data-quiz class="quiz">
+      <h3 class="text-center">Get correct square color</h3>
+      <h2 data-pos class="text-center font-xl"></h2>
+      <div class="w-full flex justify-around">
+        <button data-btn-light class="btn light text-dark">Light</button>
+        <button data-btn-dark class="btn dark text-light">Dark</button>
+      </div>
+    </div>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
